@@ -1,0 +1,6 @@
+fixtures:
+#  repositories:
+#    apache: gitolite@git.ineu.us:puppet/evenup-apache.git
+  symlinks:
+    aws_mount: "#{source_dir}"
+
