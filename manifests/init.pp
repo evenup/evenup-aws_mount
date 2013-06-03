@@ -97,7 +97,7 @@ class aws_mount(
       if $real_disk0 != '' and $real_disk1 != '' {
 
         exec { 'create-raid':
-          path    => "/bin:/usr/bin:/sbin",
+          path    => '/bin:/usr/bin:/sbin',
           command => "mdadm --create --run /dev/md0 --metadata=1.2 --level=0 --chunk=256 --raid-devices=2 ${real_disk0} ${real_disk1}",
           creates => '/dev/md0',
           require => Package['mdadm'],
