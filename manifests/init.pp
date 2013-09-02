@@ -22,8 +22,6 @@ class aws_mount(
   $mount_point = '/data'
 ) {
 
-  Class['aws_mount'] { stage => 'pre' }
-
   package { [ 'mdadm', 'xfsprogs' ]:
     ensure  => installed
   }
