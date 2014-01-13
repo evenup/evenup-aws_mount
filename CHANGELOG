@@ -1,3 +1,5 @@
+20140113 - 0.1.0
+  Support 4 disk ephemeral disks
   Add additional instance types
   Define two disk md vol
 v0.0.3:
