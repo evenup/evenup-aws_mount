@@ -42,7 +42,7 @@ class aws_mount(
     }
 
     # Single ephemeral disk
-    'm1.small', 'm1.medium', 'm2.xlarge', 'm2.2xlarge', 'c1.medium', 'cr1.8xlarge', 'g2.2xlarge': {
+    'm1.small', 'm1.medium', 'm2.xlarge', 'm2.2xlarge', 'm3.medium', 'm3.large', 'c1.medium', 'cr1.8xlarge', 'g2.2xlarge': {
 
       # Thanks RedHat for renaming xen block devices
       $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
@@ -65,7 +65,7 @@ class aws_mount(
     } #Single Disk
 
     # Two disks
-    'm1.large', 'm2.4xlarge', 'cc1.4xlarge', 'cg1.4xlarge', 'c3.large', 'c3.xlarge', 'c3.2xlarge', 'c3.4xlarge', 'c3.8xlarge', 'hi1.4xlarge', 'cr1.8xlarge': {
+    'm1.large', 'm2.4xlarge', 'm3.xlarge', 'm3.2xlarge', 'cc1.4xlarge', 'cg1.4xlarge', 'c3.large', 'c3.xlarge', 'c3.2xlarge', 'c3.4xlarge', 'c3.8xlarge', 'hi1.4xlarge', 'cr1.8xlarge': {
       # Thanks RedHat for renaming xen block devices
       $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
         /sdb/  => '/dev/xvdf',
