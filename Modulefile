@@ -1,5 +1,5 @@
 name 'evenup-aws_mount'
-version '0.1.0'
+version '0.1.1'
 author 'Justin Lambert <jlambert@letsevenup.com>'
 license 'Apache'
 summary 'Mounts ephemeral storage on EC2 instances'
