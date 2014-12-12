@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'aws_mount', :type => :class do
+  let(:facts) { { :ec2_instance_type => 'm1.small', :ec2_block_device_mapping_ephemeral0 => '/dev/sdb' } } 
 
   it { should create_class('aws_mount') }
 
@@ -26,7 +27,7 @@ describe 'aws_mount', :type => :class do
   context "single disk" do
 
     context "no ephemeral" do
-      let(:facts) { { :ec2_instance_type => 'm1.small' } }
+      let(:facts) { { :ec2_instance_type => 'm1.small', :ec2_block_device_mapping_ephemeral0 => nil } }
 
       it { should_not contain_mount('/data') }
     end
@@ -41,6 +42,7 @@ describe 'aws_mount', :type => :class do
   context "two disk" do
 
     context "no ephemeral" do
+      let(:facts) { { :ec2_instance_type => 'm1.small', :ec2_block_device_mapping_ephemeral0 => nil } }
       it { should_not contain_mount('/data') }
     end
 
