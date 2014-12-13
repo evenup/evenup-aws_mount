@@ -37,12 +37,12 @@ class aws_mount(
   }
 
   case $::ec2_instance_type {
-    '', 't1.micro', 'm3.2xlarge', 'm3.xlarge', 'm3.x2xlarge': {
+    '', 't1.micro', 'm3.2xlarge', 'm3.xlarge', 'm3.x2xlarge', 't2.micro', 't2.small', 't2.medium': {
       # Nothing to do - no local disk or instance type not defined for some reason
     }
 
     # Single ephemeral disk
-    'm1.small', 'm1.medium', 'm2.xlarge', 'm2.2xlarge', 'm3.medium', 'm3.large', 'c1.medium', 'cr1.8xlarge', 'g2.2xlarge': {
+    'm1.small', 'm1.medium', 'm2.xlarge', 'm2.2xlarge', 'm3.medium', 'm3.large', 'c1.medium', 'cr1.8xlarge', 'g2.2xlarge', 'r3.large', 'r3.xlarge', 'r3.2xlarge', 'r3.4xlarge', 'i2.xlarge': {
 
       # Thanks RedHat for renaming xen block devices
       $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
@@ -65,7 +65,7 @@ class aws_mount(
     } #Single Disk
 
     # Two disks
-    'm1.large', 'm2.4xlarge', 'm3.xlarge', 'm3.2xlarge', 'cc1.4xlarge', 'cg1.4xlarge', 'c3.large', 'c3.xlarge', 'c3.2xlarge', 'c3.4xlarge', 'c3.8xlarge', 'hi1.4xlarge', 'cr1.8xlarge': {
+    'm1.large', 'm2.4xlarge', 'm3.xlarge', 'm3.2xlarge', 'cc1.4xlarge', 'cg1.4xlarge', 'c3.large', 'c3.xlarge', 'c3.2xlarge', 'c3.4xlarge', 'c3.8xlarge', 'hi1.4xlarge', 'cr1.8xlarge', 'r3.8xlarge', 'i2.2xlarge': {
       # Thanks RedHat for renaming xen block devices
       $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
         /sdb/  => '/dev/xvdf',
@@ -129,7 +129,7 @@ class aws_mount(
     } # Two disks
 
     # Four disks
-    'm1.xlarge', 'c1.xlarge', 'cc2.8xlarge' : {
+    'm1.xlarge', 'c1.xlarge', 'cc2.8xlarge', 'i2.4xlarge' : {
       # Thanks RedHat for renaming xen block devices
       $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
         /sdb/  => '/dev/xvdf',
@@ -213,6 +213,10 @@ class aws_mount(
         }
       }
     } # Four disks
+
+    'i2.8xlarge': {
+      fail('TODO - Need to write ephemeral mount for this instance type')
+    } # 8 disks
 
     'hs1.8xlarge': {
       fail('TODO - Need to write ephemeral mount for this instance type')
