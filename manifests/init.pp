@@ -36,6 +36,66 @@ class aws_mount(
     require => File[$mount_point]
   }
 
+  if $::ec2_block_device_mapping_ephemeral0 {
+    # Thanks RedHat for renaming xen block devices
+    $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
+      /sdb/   => '/dev/xvdf',
+      /sdc/   => '/dev/xvdg',
+      /sdd/   => '/dev/xvdh',
+      /sde/   => '/dev/xvdf',
+      /sdf/   => '/dev/xvdg',
+      /sdg/   => '/dev/xvdh',
+      default => false
+    }
+  } else {
+    $real_disk0 = false
+  }
+
+  if $::ec2_block_device_mapping_ephemeral1 {
+    # Thanks RedHat for renaming xen block devices
+    $real_disk1 = $::ec2_block_device_mapping_ephemeral1 ? {
+      /sdb/   => '/dev/xvdf',
+      /sdc/   => '/dev/xvdg',
+      /sdd/   => '/dev/xvdh',
+      /sde/   => '/dev/xvdf',
+      /sdf/   => '/dev/xvdg',
+      /sdg/   => '/dev/xvdh',
+      default => false
+    }
+  } else {
+    $real_disk1 = false
+  }
+
+  if $::ec2_block_device_mapping_ephemeral2 {
+    # Thanks RedHat for renaming xen block devices
+    $real_disk2 = $::ec2_block_device_mapping_ephemeral2 ? {
+      /sdb/   => '/dev/xvdf',
+      /sdc/   => '/dev/xvdg',
+      /sdd/   => '/dev/xvdh',
+      /sde/   => '/dev/xvdf',
+      /sdf/   => '/dev/xvdg',
+      /sdg/   => '/dev/xvdh',
+      default => false
+    }
+  } else {
+    $real_disk2 = false
+  }
+
+  if $::ec2_block_device_mapping_ephemeral3 {
+    # Thanks RedHat for renaming xen block devices
+    $real_disk3 = $::ec2_block_device_mapping_ephemeral3 ? {
+      /sdb/   => '/dev/xvdf',
+      /sdc/   => '/dev/xvdg',
+      /sdd/   => '/dev/xvdh',
+      /sde/   => '/dev/xvdf',
+      /sdf/   => '/dev/xvdg',
+      /sdg/   => '/dev/xvdh',
+      default => false
+    }
+  } else {
+    $real_disk3 = false
+  }
+
   case $::ec2_instance_type {
     '', 't1.micro', 'm3.2xlarge', 'm3.xlarge', 'm3.x2xlarge', 't2.micro', 't2.small', 't2.medium': {
       # Nothing to do - no local disk or instance type not defined for some reason
@@ -44,16 +104,7 @@ class aws_mount(
     # Single ephemeral disk
     'm1.small', 'm1.medium', 'm2.xlarge', 'm2.2xlarge', 'm3.medium', 'm3.large', 'c1.medium', 'cr1.8xlarge', 'g2.2xlarge', 'r3.large', 'r3.xlarge', 'r3.2xlarge', 'r3.4xlarge', 'i2.xlarge': {
 
-      # Thanks RedHat for renaming xen block devices
-      $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        default     => ''
-      }
-
-      if $real_disk0 != '' {
+      if $real_disk0 {
         mount { $mount_point:
           ensure  => mounted,
           atboot  => true,
@@ -66,29 +117,8 @@ class aws_mount(
 
     # Two disks
     'm1.large', 'm2.4xlarge', 'm3.xlarge', 'm3.2xlarge', 'cc1.4xlarge', 'cg1.4xlarge', 'c3.large', 'c3.xlarge', 'c3.2xlarge', 'c3.4xlarge', 'c3.8xlarge', 'hi1.4xlarge', 'cr1.8xlarge', 'r3.8xlarge', 'i2.2xlarge': {
-      # Thanks RedHat for renaming xen block devices
-      $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        /sdf/  => '/dev/xvdg',
-        /sdg/  => '/dev/xvdh',
-        default     => ''
-      }
 
-      # Thanks RedHat for renaming xen block devices
-      $real_disk1 = $::ec2_block_device_mapping_ephemeral1 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        /sdf/  => '/dev/xvdg',
-        /sdg/  => '/dev/xvdh',
-        default     => ''
-      }
-
-      if $real_disk0 != '' and $real_disk1 != '' {
+      if $real_disk0 and $real_disk1 {
 
         exec { 'create-raid':
           path    => '/bin:/usr/bin:/sbin',
@@ -130,51 +160,8 @@ class aws_mount(
 
     # Four disks
     'm1.xlarge', 'c1.xlarge', 'cc2.8xlarge', 'i2.4xlarge' : {
-      # Thanks RedHat for renaming xen block devices
-      $real_disk0 = $::ec2_block_device_mapping_ephemeral0 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        /sdf/  => '/dev/xvdg',
-        /sdg/  => '/dev/xvdh',
-        default     => ''
-      }
 
-      # Thanks RedHat for renaming xen block devices
-      $real_disk1 = $::ec2_block_device_mapping_ephemeral1 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        /sdf/  => '/dev/xvdg',
-        /sdg/  => '/dev/xvdh',
-        default     => ''
-      }
-
-      # Thanks RedHat for renaming xen block devices
-      $real_disk2 = $::ec2_block_device_mapping_ephemeral1 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        /sdf/  => '/dev/xvdg',
-        /sdg/  => '/dev/xvdh',
-        default     => ''
-      }
-
-      # Thanks RedHat for renaming xen block devices
-      $real_disk3 = $::ec2_block_device_mapping_ephemeral1 ? {
-        /sdb/  => '/dev/xvdf',
-        /sdc/  => '/dev/xvdg',
-        /sdd/  => '/dev/xvdh',
-        /sde/  => '/dev/xvdf',
-        /sdf/  => '/dev/xvdg',
-        /sdg/  => '/dev/xvdh',
-        default     => ''
-      }
-
-      if $real_disk0 != '' and $real_disk1 != '' and $real_disk2 != '' and $real_disk3 != '' {
+      if $real_disk0 and $real_disk1 and $real_disk2 and $real_disk3 {
 
         exec { 'create-raid':
           path    => '/bin:/usr/bin:/sbin',
