@@ -8,15 +8,16 @@ Released under the Apache 2.0 licence
 Usage:
 ------
 
+trusted_node_data = true is required
+
 To mount the disks:
 <pre>
   include aws_mount
 </pre>
 
-
 Known Issues:
 -------------
-* 4 and 24 disks not supported at this time
+* 8 and 24 disks not supported at this time
 
 Contribute:
 -----------

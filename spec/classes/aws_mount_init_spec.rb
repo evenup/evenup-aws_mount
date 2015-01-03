@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'aws_mount', :type => :class do
-  let(:facts) { { :ec2_instance_type => 'm1.small', :ec2_block_device_mapping_ephemeral0 => '/dev/sdb', :ec2_block_device_mapping_ephemeral1 => nil, :ec2_block_device_mapping_ephemeral2 => nil, :ec2_block_device_mapping_ephemeral3 => nil } }
+  let(:facts) { { :ec2_instance_type => 'm1.small', :facts => { 'ec2_block_device_mapping_ephemeral0' => '/dev/sdb' } } }
 
   it { should create_class('aws_mount') }
 
@@ -14,7 +14,7 @@ describe 'aws_mount', :type => :class do
   end
 
   context "no ephemeral" do
-    let(:facts) { { :ec2_instance_type => 'm1.small', :ec2_block_device_mapping_ephemeral0 => nil, :ec2_block_device_mapping_ephemeral1 => nil, :ec2_block_device_mapping_ephemeral2 => nil, :ec2_block_device_mapping_ephemeral3 => nil } }
+    let(:facts) { { :ec2_instance_type => 'm1.small', :facts => {} } }
 
     it { should_not contain_mount('/data') }
   end
@@ -26,21 +26,19 @@ describe 'aws_mount', :type => :class do
   end
 
   context "no disks instance" do
-    let(:facts) { { :ec2_instance_type => 'm3.2xlarge', :ec2_block_device_mapping_ephemeral0 => nil, :ec2_block_device_mapping_ephemeral1 => nil, :ec2_block_device_mapping_ephemeral2 => nil, :ec2_block_device_mapping_ephemeral3 => nil } }
+    let(:facts) { { :ec2_instance_type => 'm3.2xlarge', :facts => {} } }
     it { should_not contain_mount('/data') }
   end
 
-  context "single disk" do
-    context "ephemeral disk" do
-      let(:facts) { { :ec2_instance_type => 'm1.small', :ec2_block_device_mapping_ephemeral0 => '/dev/sdb', :ec2_block_device_mapping_ephemeral1 => nil, :ec2_block_device_mapping_ephemeral2 => nil, :ec2_block_device_mapping_ephemeral3 => nil } }
+  context "single ephemeral disk" do
+    let(:facts) { { :ec2_instance_type => 'm1.small', :facts => { 'ec2_block_device_mapping_ephemeral0' => '/dev/sdb' } } }
 
-      it { should contain_mount('/data') }
-    end
+    it { should contain_mount('/data') }
   end
 
   context "two disk" do
     context "ephemeral disk" do
-      let(:facts) { { :ec2_instance_type => 'm1.large', :ec2_block_device_mapping_ephemeral0 => '/dev/sdb', :ec2_block_device_mapping_ephemeral1 => '/dev/sdc', :ec2_block_device_mapping_ephemeral2 => nil, :ec2_block_device_mapping_ephemeral3 => nil } }
+      let(:facts) { { :ec2_instance_type => 'm1.large', :facts => { 'ec2_block_device_mapping_ephemeral0' => '/dev/sdb', 'ec2_block_device_mapping_ephemeral1' => '/dev/sdc' } } }
 
       it { should contain_exec('create-raid').with_command("mdadm --create --run /dev/md0 --metadata=1.2 --level=0 --chunk=256 --raid-devices=2 /dev/xvdf /dev/xvdg") }
       it { should contain_exec('create mdadm.conf').with_command("echo 'DEVICE /dev/xvdf /dev/xvdg' > /etc/mdadm.conf ; mdadm --detail --scan >> /etc/mdadm.conf") }
