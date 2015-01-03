@@ -2,7 +2,7 @@
   "name": "evenup-aws_mount",
   "version": "0.1.1",
   "author": "Justin Lambert <jlambert@letsevenup.com>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "summary": "Mounts ephemeral storage on EC2 instances",
   "source": "https://github.com/evenup/evenup-aws_mount",
   "project_page": "https://github.com/evenup/evenup-aws_mount",
