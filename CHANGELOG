@@ -1,3 +1,6 @@
+20150105 - 0.2.0
+  Update for strict_variables = true
+  Support t2 instances
 20140314 - 0.1.1
   Support m3 instances
 20140113 - 0.1.0
